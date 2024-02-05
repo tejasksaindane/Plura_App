@@ -137,7 +137,10 @@ export const verifyAndAcceptInvitation = async () => {
 
   if (!user) return redirect("/sign-in");
   const invitationExists = await db.invitation.findUnique({
-    where: { email: user.emailAddresses[0].emailAddress, status: "PENDING" },
+    where: {
+      email: user.emailAddresses[0].emailAddress,
+      status: "PENDING",
+    },
   });
   if (invitationExists) {
     const userDetails = await createTeamUser(invitationExists.agencyId, {
