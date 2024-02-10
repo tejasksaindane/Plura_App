@@ -15,8 +15,7 @@ import {
   User,
 } from "@prisma/client";
 import { v4 } from 'uuid'
-
-
+import { createMediaType } from "./types";
 
 export const getAuthUserDetails = async () => {
   const user = await currentUser();
@@ -229,13 +228,13 @@ export const initUser = async (newUser: Partial<User>) => {
   return userData;
 };
 
-export const upsertAgency = async (agency:Agency,price?:Plan) => {
-  if (!agency.companyEmail) return null
+export const upsertAgency = async (agency: Agency, price?: Plan) => {
+  if (!agency.companyEmail) return null;
   try {
     const agencyDetails = await db.agency.upsert({
       where: {
-        id:agency.id,
-      }, 
+        id: agency.id,
+      },
       update: agency,
       create: {
         users: { connect: { email: agency.companyEmail } },
@@ -243,44 +242,44 @@ export const upsertAgency = async (agency:Agency,price?:Plan) => {
         SidebarOption: {
           create: [
             {
-              name: 'Dashboard',
-              icon: 'category',
+              name: "Dashboard",
+              icon: "category",
               link: `/agency/${agency.id}`,
             },
             {
-              name: 'Launchpad',
-              icon: 'clipboardIcon',
+              name: "Launchpad",
+              icon: "clipboardIcon",
               link: `/agency/${agency.id}/launchpad`,
             },
             {
-              name: 'Billing',
-              icon: 'payment',
+              name: "Billing",
+              icon: "payment",
               link: `/agency/${agency.id}/billing`,
             },
             {
-              name: 'Settings',
-              icon: 'settings',
+              name: "Settings",
+              icon: "settings",
               link: `/agency/${agency.id}/settings`,
             },
             {
-              name: 'Sub Accounts',
-              icon: 'person',
+              name: "Sub Accounts",
+              icon: "person",
               link: `/agency/${agency.id}/all-subaccounts`,
             },
             {
-              name: 'Team',
-              icon: 'shield',
+              name: "Team",
+              icon: "shield",
               link: `/agency/${agency.id}/team`,
             },
           ],
-        }
-      }
-    })
-    return agencyDetails
+        },
+      },
+    });
+    return agencyDetails;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 export const getNotificationAndUser = async (agencyId: string) => {
   try {
@@ -298,17 +297,17 @@ export const getNotificationAndUser = async (agencyId: string) => {
 };
 
 export const upsertSubAccount = async (subAccount: SubAccount) => {
-  if (!subAccount.companyEmail) return null
+  if (!subAccount.companyEmail) return null;
   const agencyOwner = await db.user.findFirst({
     where: {
       Agency: {
         id: subAccount.agencyId,
       },
-      role: 'AGENCY_OWNER',
+      role: "AGENCY_OWNER",
     },
-  })
-  if (!agencyOwner) return console.log('🔴Error could not create subaccount')
-  const permissionId = v4()
+  });
+  if (!agencyOwner) return console.log("🔴Error could not create subaccount");
+  const permissionId = v4();
   const response = await db.subAccount.upsert({
     where: { id: subAccount.id },
     update: subAccount,
@@ -326,57 +325,56 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
         },
       },
       Pipeline: {
-        create: { name: 'Lead Cycle' },
+        create: { name: "Lead Cycle" },
       },
       SidebarOption: {
         create: [
           {
-            name: 'Launchpad',
-            icon: 'clipboardIcon',
+            name: "Launchpad",
+            icon: "clipboardIcon",
             link: `/subaccount/${subAccount.id}/launchpad`,
           },
           {
-            name: 'Settings',
-            icon: 'settings',
+            name: "Settings",
+            icon: "settings",
             link: `/subaccount/${subAccount.id}/settings`,
           },
           {
-            name: 'Funnels',
-            icon: 'pipelines',
+            name: "Funnels",
+            icon: "pipelines",
             link: `/subaccount/${subAccount.id}/funnels`,
           },
           {
-            name: 'Media',
-            icon: 'database',
+            name: "Media",
+            icon: "database",
             link: `/subaccount/${subAccount.id}/media`,
           },
           {
-            name: 'Automations',
-            icon: 'chip',
+            name: "Automations",
+            icon: "chip",
             link: `/subaccount/${subAccount.id}/automations`,
           },
           {
-            name: 'Pipelines',
-            icon: 'flag',
+            name: "Pipelines",
+            icon: "flag",
             link: `/subaccount/${subAccount.id}/pipelines`,
           },
           {
-            name: 'Contacts',
-            icon: 'person',
+            name: "Contacts",
+            icon: "person",
             link: `/subaccount/${subAccount.id}/contacts`,
           },
           {
-            name: 'Dashboard',
-            icon: 'category',
+            name: "Dashboard",
+            icon: "category",
             link: `/subaccount/${subAccount.id}`,
           },
         ],
       },
     },
-  })
-  return response
-}
-
+  });
+  return response;
+};
 
 export const getUserPermissions = async (userId: string) => {
   const response = await db.user.findUnique({
@@ -402,19 +400,27 @@ export const updateUser = async (user: Partial<User>) => {
   return response;
 };
 
-
-export const changeUserPermissions = async (permissionId: string | undefined, userEmail: string, subAccountId: string, permission: boolean) => {
+export const changeUserPermissions = async (
+  permissionId: string | undefined,
+  userEmail: string,
+  subAccountId: string,
+  permission: boolean
+) => {
   try {
     const response = await db.permissions.upsert({
       where: { id: permissionId },
       update: { access: permission },
-      create:{access:permission, email:userEmail, subAccountId:subAccountId},
-    })
-    return response
+      create: {
+        access: permission,
+        email: userEmail,
+        subAccountId: subAccountId,
+      },
+    });
+    return response;
   } catch (error) {
-    console.log('could not change permissions',error)
+    console.log("could not change permissions", error);
   }
-}
+};
 
 export const getSubaccountDetails = async (subaccountId: string) => {
   const response = await db.subAccount.findUnique({
@@ -481,4 +487,67 @@ export const sendInvitation = async (
   return resposne;
 };
 
+export const getMedia = async (subaccountId: string) => {
+  const mediafiles = await db.subAccount.findUnique({
+    where: {
+      id: subaccountId,
+    },
+    include: { Media: true },
+  });
+  return mediafiles
+};
+
+export const createMedia = async (
+  subaccountId: string,
+  mediaFile: createMediaType
+) => {
+  const response = await db.media.create({
+    data: {
+      link: mediaFile.link,
+      name: mediaFile.link,
+      subAccountId:subaccountId
+    }
+  })
+  return response
+};
+
+export const deleteMedia = async (mediaId:string) => {
+  const response = await db.media.delete({
+    where: {
+      id:mediaId,
+    }
+  })
+  return response 
+}
+
+export const getPipelineDetails = async (pipelineId:string) => {
+  const response = await db.pipeline.findUnique({
+    where: {
+      id:pipelineId,
+    }
+  })
+  return response
+}
+
+export const getLanesWithTicketsAndTags = async (pipelineId: string) => {
+  const response = await db.lane.findMany({
+    where: {
+      pipelineId,
+    },
+    orderBy: { order: 'asc' },
+    include: {
+      Tickets: {
+        orderBy: {
+          order: 'asc'
+        },
+        include: {
+          Tags: true,
+          Assigned: true,
+          Customer: true,
+        }
+      }
+    }
+  })
+  return response 
+}
 // apeksutatre
