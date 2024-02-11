@@ -1,3 +1,4 @@
+import CreatePipelineForm from "@/components/forms/create-pipeline-form";
 import CustomModal from "@/components/global/custom-modal";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
@@ -21,7 +22,7 @@ const PipelineInfoBar = ({ pipelineId, pipelines, subAccountId }: Props) => {
             <CustomModal
                 title="Create a pipeline"
                 subheading="Pipelines allows you to group tickets into lanes and track your business processes all in one place">
-                {/* <CreatePipelineForm/> */}
+            <CreatePipelineForm subAccountId={subAccountId} />
                 <div></div>
             </CustomModal>
         )
