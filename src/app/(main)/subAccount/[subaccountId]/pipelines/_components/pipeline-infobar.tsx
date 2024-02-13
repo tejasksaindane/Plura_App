@@ -1,3 +1,5 @@
+"use client";
+
 import CreatePipelineForm from "@/components/forms/create-pipeline-form";
 import CustomModal from "@/components/global/custom-modal";
 import { Button } from "@/components/ui/button";
@@ -16,18 +18,18 @@ type Props = {
 const PipelineInfoBar = ({ pipelineId, pipelines, subAccountId }: Props) => {
   const { setOpen: setOpenModal, setClose } = useModal();
   const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(pipelineId);
-    const handleClickCreatePipeline = () => {
-        setOpenModal(
-            <CustomModal
-                title="Create a pipeline"
-                subheading="Pipelines allows you to group tickets into lanes and track your business processes all in one place">
-            <CreatePipelineForm subAccountId={subAccountId} />
-                <div></div>
-            </CustomModal>
-        )
-    }
-
+  const [value, setValue] = useState(pipelineId);
+  const handleClickCreatePipeline = () => {
+    setOpenModal(
+      <CustomModal
+        title="Create a pipeline"
+        subheading="Pipelines allows you to group tickets into lanes and track your business processes all in one place"
+      >
+        <CreatePipelineForm subAccountId={subAccountId} />
+        <div></div>
+      </CustomModal>
+    );
+  };
 
   return (
     <div>
@@ -42,8 +44,8 @@ const PipelineInfoBar = ({ pipelineId, pipelines, subAccountId }: Props) => {
             >
               {value
                 ? pipelines.find((pipeline) => pipeline.id === value)?.name
-                              : "select a pipeline..."}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                : "select a pipeline..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
         </Popover>
