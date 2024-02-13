@@ -99,3 +99,6 @@ export const TicketFormSchema = z.object({
   }),
 });
 
+export type PipelineDetailsWithLanesCardsTagsTickets = Prisma.PromiseReturnType<
+  typeof getPipelineDetails
+>
