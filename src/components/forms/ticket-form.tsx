@@ -152,7 +152,7 @@ const TicketForm = ({ getNewTicket, laneId, subaccountId }: Props) => {
         <CardTitle>Ticket Details</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
+        <Form {...form}> //destructuring form
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
@@ -209,6 +209,7 @@ const TicketForm = ({ getNewTicket, laneId, subaccountId }: Props) => {
               )}
             />
             <h3>Add tags</h3>
+            {/* WIP Add Tags */}
             {/* <TagCreator
               subAccountId={subaccountId}
               getSelectedTags={setTags}

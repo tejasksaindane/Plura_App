@@ -101,4 +101,9 @@ export const TicketFormSchema = z.object({
 
 export type PipelineDetailsWithLanesCardsTagsTickets = Prisma.PromiseReturnType<
   typeof getPipelineDetails
->
+>;
+
+export const ContactUserFormSchema = z.object({
+  name: z.string().min(1, "Required"),
+  email: z.string().email(),
+});
