@@ -45,6 +45,8 @@ const PricingCard = ({
   const searchParams = useSearchParams();
     const plan = searchParams.get("plan");
     
+  
+  console.log("-------------------------======>.>>..>>>", searchParams);
     const handleManagePlan = async () => {
         setOpen(
             <CustomModal 
