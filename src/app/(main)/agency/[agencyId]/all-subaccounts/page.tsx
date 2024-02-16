@@ -30,6 +30,8 @@ type Props = {
   params: { agencyId: string };
 };
 
+
+
 const AllSubaccountsPage = async ({ params }: Props) => {
   const user = await getAuthUserDetails();
   if (!user) return;
