@@ -53,3 +53,51 @@ export default function ExampleClientComponent(){
 - The properties name is the segment's name, and the properties value is what the segment is filled with.
 - The properties value will either be a string or array of string's depending on type of dynamic segment.
 - If the route contains no dynamic parameters, useParams returns an empty object.
+
+#-----------------------------------------------------------------------------------------------------------#
+
+# Array Destructuring :- 
+# --> With array destructuring, you can unpack items from arrays directly into variables
+
+const colors = ['red' , 'green' , 'blue'];
+const [firstColor, setFirstColor] = colors;
+
+console.log(firstColor); //Outputs : "red"
+console.log(secondColor); // Outputs : "Green"
+
+# Object Destructuring
+# --> Object destructuring allows you to extract properties from objects
+
+const profile = {
+    name: 'Codecrumbs',
+    language: 'Javascript,
+}
+
+const {name, language} = profile; 
+
+console.log(name); // outputs:"Codecrumbs"
+console.log(language); // outputs:"Javascript"
+
+# Nested Destructuring
+# --> For objects with nested structure, you can destructure in a layered manner.
+
+const student = {name: 'Code' , scores:{math:90, science:85}};
+const {name, scores:{math},} = student;
+
+console.log(name); //Outputs: 'Code'
+console.log(math); //Outputs: 90
+
+# Function Parameter Destructuring
+# This is Especially useful when working with function parameters.
+
+#---------------------------------------------------------------------------------------------------------#
+# Function Parameter Destructuring 
+# This is Especially useful when working with function parameters.
+
+function introduce({name}){
+    console.log(`My name is ${name}`);
+}
+
+introduce(profile); // Outputs : My Name is Codecrumbs" 
+
+#----------------------------------------------------------------------------------------------------------#
