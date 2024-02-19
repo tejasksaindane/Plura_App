@@ -796,4 +796,11 @@ export const upsertContact = async (
   return response
 }
 
+
+export const getFunnels = async (subaccountId: string) => {
+  const funnels = await db.funnel.findMany({
+    where: { subAccountId: subaccountId },
+    include:{FunnelPages:true}
+  })
+}
 // apeksutatre

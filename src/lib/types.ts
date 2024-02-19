@@ -2,6 +2,7 @@ import { Contact, Lane, Notification, Prisma, Role, Tag, Ticket, User } from "@p
 import {
   _getTicketsWithAllRelations,
   getAuthUserDetails,
+  getFunnels,
   getMedia,
   getPipelineDetails,
   getTicketsWithTags,
@@ -90,7 +91,7 @@ export type TicketDetails = Prisma.PromiseReturnType<
   typeof _getTicketsWithAllRelations
 >;
 
-const currencyNumberRegex = /^\d+(\.\d{1,2})?$/
+const currencyNumberRegex = /^\d+(\.\d{1,2})?$/;
 
 export const TicketFormSchema = z.object({
   name: z.string().min(1),
@@ -109,25 +110,28 @@ export const ContactUserFormSchema = z.object({
   email: z.string().email(),
 });
 
-
 export type Address = {
-  city: string,
-  country: string,
-  line1: string,
-  postal_code: string,
-  state:string
-}
+  city: string;
+  country: string;
+  line1: string;
+  postal_code: string;
+  state: string;
+};
 
 export type ShippingInfo = {
-  address: Address,
-  name:string,
-}
-export type StripeCustomerType = { 
-  email: string,
-  name: string,
-  shipping: ShippingInfo,
   address: Address;
-}
+  name: string;
+};
+export type StripeCustomerType = {
+  email: string;
+  name: string;
+  shipping: ShippingInfo;
+  address: Address;
+};
 
+export type PricesList = Stripe.ApiList<Stripe.Price>;
 
-export type PricesList = Stripe.ApiList<Stripe.Price>
+export type FunnelsForSubAccount = Prisma.PromiseReturnType<
+  typeof getFunnels
+  >
+[0]
